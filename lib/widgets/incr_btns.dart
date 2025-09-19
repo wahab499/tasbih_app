@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 
 class IncrBtns extends StatefulWidget {
-  const IncrBtns({super.key});
+  final Function(int) onSave;
+  const IncrBtns({super.key, required this.onSave});
 
   @override
   State<IncrBtns> createState() => _IncrBtnsState();
@@ -9,6 +11,7 @@ class IncrBtns extends StatefulWidget {
 
 class _IncrBtnsState extends State<IncrBtns> {
   int _count = 0;
+  int totalcount = 0;
   void _increment() {
     setState(() {
       _count++;
@@ -30,7 +33,21 @@ class _IncrBtnsState extends State<IncrBtns> {
   }
 
   void _save() {
-    setState(() {});
+    if (_count != 0) {
+      Get.snackbar(
+        'Saved',
+        'Tasbeeh is Saved Sucessfully',
+        snackPosition: SnackPosition.TOP,
+      );
+    } else {
+      Get.snackbar(
+        'Tasbeeh is 0',
+        'Nothing for Saving',
+        snackPosition: SnackPosition.TOP,
+      );
+    }
+
+    widget.onSave(_count); // Send value to parent screen
   }
 
   @override
@@ -42,11 +59,12 @@ class _IncrBtnsState extends State<IncrBtns> {
           _count.toString().padLeft(5, '0'),
           style: TextStyle(
             fontSize: 70,
+            fontFamily: 'digital-7',
             fontWeight: FontWeight.w900,
             color: Colors.black,
           ),
         ),
-        SizedBox(height: 30),
+        SizedBox(height: 20),
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
@@ -73,7 +91,7 @@ class _IncrBtnsState extends State<IncrBtns> {
             ),
           ],
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 26),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 50),
           child: Row(
@@ -125,75 +143,3 @@ class _IncrBtnsState extends State<IncrBtns> {
     );
   }
 }
-
-// class RippleButton extends StatefulWidget {
-//   @override
-//   _RippleButtonState createState() => _RippleButtonState();
-// }
-
-// class _RippleButtonState extends State<RippleButton> {
-//   double rippleSize = 0;
-//   double rippleOpacity = 0;
-
-//   void _onTap() {
-//     setState(() {
-//       rippleSize = 300; // Expand ripple
-//       rippleOpacity = 0.3; // Visible
-//     });
-
-//     // After short delay, fade out and reset
-//     Future.delayed(Duration(milliseconds: 300), () {
-//       setState(() {
-//         rippleOpacity = 0;
-//       });
-//     });
-
-//     Future.delayed(Duration(milliseconds: 600), () {
-//       setState(() {
-//         rippleSize = 0; // Reset size
-//       });
-//     });
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return GestureDetector(
-//       onTap: _onTap,
-//       child: Stack(
-//         alignment: Alignment.center,
-//         children: [
-//           // Ripple Effect
-//           AnimatedContainer(
-//             duration: Duration(milliseconds: 500),
-//             height: rippleSize,
-//             width: rippleSize,
-//             decoration: BoxDecoration(
-//               color: Colors.yellow.withOpacity(rippleOpacity),
-//               shape: BoxShape.circle,
-//             ),
-//           ),
-
-//           // Main Button
-//           Container(
-//             height: 180,
-//             width: 180,
-//             decoration: BoxDecoration(
-//               color: Colors.amber,
-//               shape: BoxShape.circle,
-//               boxShadow: [
-//                 BoxShadow(
-//                   color: Colors.yellow.withValues(alpha: 0.5),
-//                   blurRadius: 25,
-//                   spreadRadius: 5,
-//                 ),
-//               ],
-//             ),
-//             child: Center(
-//               child: Icon(Icons.touch_app, color: Colors.black, size: 50),
-//             ),
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-// }

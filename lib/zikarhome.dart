@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:tasbih_app/navbar.dart';
+import 'package:get/get.dart';
+import 'package:tasbih_app/profile.dart';
 import 'package:tasbih_app/widgets/incr_btns.dart';
 
-class Tasbeeh extends StatefulWidget {
-  const Tasbeeh({super.key});
+class Zikar extends StatefulWidget {
+  const Zikar({super.key});
 
   @override
-  State<Tasbeeh> createState() => _TasbeehState();
+  State<Zikar> createState() => _TasbeehState();
 }
 
-class _TasbeehState extends State<Tasbeeh> {
+class _TasbeehState extends State<Zikar> {
   List selectedzikr = [
     {
       'Arabic': 'ٱلْحَمْدُ لِلَّٰهِ',
@@ -17,6 +18,8 @@ class _TasbeehState extends State<Tasbeeh> {
       'Translation': 'All praise is due to Allah',
     },
   ];
+
+  List<dynamic> saveList = [];
 
   List<Map<String, String>> zikrList = [
     {
@@ -55,10 +58,19 @@ class _TasbeehState extends State<Tasbeeh> {
       'Translation': 'My Lord, increase me in knowledge',
     },
   ];
+  int savedValue = 0;
+  void updateValue(int value) {
+    setState(() {
+      savedValue = value;
+    });
+  }
+
   late List<bool> favoriteStatus = List.filled(zikrList.length, false);
 
   @override
   Widget build(BuildContext context) {
+    double screenWidth = MediaQuery.of(context).size.width;
+    double screenHeight = MediaQuery.of(context).size.height;
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -90,7 +102,11 @@ class _TasbeehState extends State<Tasbeeh> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => BottomNavBar(index: 4),
+                            builder:
+                                (context) => Profile(
+                                  selectedzikr: saveList,
+                                  totalCount: savedValue,
+                                ),
                           ),
                         );
                       },
@@ -183,13 +199,13 @@ class _TasbeehState extends State<Tasbeeh> {
                                           ),
                                         ),
                                       ),
-
                                       Positioned(
                                         top: 10,
                                         right: 10,
                                         child: GestureDetector(
                                           onTap: () {
                                             selectedzikr[0] = zikrList[index];
+                                            saveList.add(zikrList[index]);
                                             setState(() {
                                               selectedzikr;
                                             });
@@ -241,7 +257,7 @@ class _TasbeehState extends State<Tasbeeh> {
                   },
                   child: Container(
                     height: 60,
-                    width: 320,
+                    width: screenWidth * 0.8,
                     decoration: BoxDecoration(
                       color: Colors.black.withValues(alpha: 0.2),
                       borderRadius: BorderRadius.circular(30),
@@ -254,6 +270,7 @@ class _TasbeehState extends State<Tasbeeh> {
                           'Select a Zikr',
                           style: TextStyle(
                             fontSize: 22,
+                            fontFamily: 'poppins',
                             fontWeight: FontWeight.w600,
                             color: Colors.black,
                           ),
@@ -273,6 +290,7 @@ class _TasbeehState extends State<Tasbeeh> {
                   selectedzikr[0]['Arabic']!,
                   style: TextStyle(
                     fontSize: 42,
+
                     fontWeight: FontWeight.bold,
                     color: Colors.black,
                     fontFamily: 'Amiri',
@@ -297,7 +315,7 @@ class _TasbeehState extends State<Tasbeeh> {
                   ),
                 ),
 
-                IncrBtns(),
+                IncrBtns(onSave: updateValue),
               ],
             ),
           ),

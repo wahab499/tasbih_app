@@ -4,11 +4,12 @@ import 'package:tasbih_app/namaz.dart';
 import 'package:tasbih_app/Quran.dart';
 import 'package:tasbih_app/profile.dart';
 import 'package:tasbih_app/reward.dart';
-import 'package:tasbih_app/tasbihhome.dart';
+import 'package:tasbih_app/zikarhome.dart';
 
 class BottomNavBar extends StatefulWidget {
   final int index;
-  BottomNavBar({super.key, required this.index});
+  final List<dynamic>? selectedZikr;
+  BottomNavBar({super.key, required this.index, this.selectedZikr});
 
   @override
   State<BottomNavBar> createState() => _BottomNavBarState();
@@ -24,7 +25,7 @@ class _BottomNavBarState extends State<BottomNavBar> {
   }
 
   final List<Widget> _pages = [
-    Tasbeeh(), // index 0
+    Zikar(), // index 0
     Quran(), // index 1
     Namaz(), // index 2
     Reward(), // index 3
@@ -53,10 +54,9 @@ class _BottomNavBarState extends State<BottomNavBar> {
               ),
             ),
           ),
-
           // Use IndexedStack to keep screen states
-          //IndexedStack(index: _selectedIndex, children: _pages),
-          _pages[_selectedIndex],
+          IndexedStack(index: _selectedIndex, children: _pages),
+          //_pages[_selectedIndex],
         ],
       ),
 
